@@ -1,4 +1,4 @@
-import {respostas} from './respostas.js';
+import {respostas, nome} from './respostas.js';
 import {perguntas} from './perguntas.js';
 
 const caixaPrincipal = document.querySelector(".caixa-principal");
@@ -6,6 +6,9 @@ const caixaPerguntas = document.querySelector(".caixa-perguntas");
 const caixaAlternativas = document.querySelector(".caixa-alternativas");
 const caixaResultado = document.querySelector(".caixa-resultado");
 const textoResultado = document.querySelector(".texto-resultado");
+const botaoJogarNovamente = document.querySelector(".novamente-btn");
+const botaoIniciar = document.querySelector(".inicar-btn");
+const telaInical = document.querySelector(".tela-inical");
 
 let atual = 0; 
 let perguntaAtual;
@@ -49,7 +52,12 @@ function mostraResultado(){
 function respostaSelecionada(opcaoSelecionada) {
     const afirmacoes = aleatorio(opcaoSelecionada.afirmacao);
     historiaFinal += afirmacoes + " ";
-    atual++;
+    if (opcaoSelecionada.proxima !== undefined) {
+        atual = opcaoSelecionada.proxima;
+    } else {
+        mostraResultado();
+        return;
+    }
     mostraPergunta();
 }
 
@@ -60,4 +68,10 @@ function jogaNovamente() {
     mostraPergunta();
 }
 
-mostraPergunta();
+function substituiNome() {
+    for (const pergunta of perguntas) {
+        pergunta.enunciado = pergunta.enunciado.replace(/você/g, nome);
+    }
+}
+
+substituiNome();
